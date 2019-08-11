@@ -1,4 +1,6 @@
 resource "google_compute_global_address" "db" {
+  provider      = "google-beta"
+  project       = var.project_id
   name          = "db-private-address"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
@@ -7,11 +9,11 @@ resource "google_compute_global_address" "db" {
 }
 
 resource "google_service_networking_connection" "db_vpc_connection" {
+  provider                = "google-beta"
   network                 = var.vpc
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.db.name]
 }
-
 
 resource "google_sql_database_instance" "default" {
   project          = var.project_id

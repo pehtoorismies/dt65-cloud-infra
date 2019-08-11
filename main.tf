@@ -9,7 +9,9 @@ provider "google" {
 }
 
 provider "google-beta" {
-  region  = var.region
+  credentials = "${file("credentials.json")}"
+  project     = var.project
+  region      = var.region
   version = "~> 2.12"
 }
 
@@ -51,6 +53,7 @@ module "mysql-db" {
   db_collation     = "utf8mb4_unicode_ci"
   vpc              = module.vpc.self_link
   databases        = var.databases
+  # subnet_ip_cidr_range = module.subnet.ip_cidr_range
 
   database_flags = [
     {

@@ -98,6 +98,12 @@ variable "backup_configuration" {
   }
 }
 
+variable "peering_ranges" {
+  type = list(string)
+  default = ["10.240.0.0/24"]
+}
+
+
 variable "databases" {
 
   type = list(object({

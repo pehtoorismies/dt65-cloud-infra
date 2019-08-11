@@ -12,6 +12,7 @@ variable "region" {
 
 variable "subnet_cidr" {
   default = {
+    # prod = "10.128.0.0/16"
     prod = "10.10.0.0/24"
     dev  = "10.240.0.0/24"
   }
