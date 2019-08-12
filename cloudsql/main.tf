@@ -92,7 +92,7 @@ resource "google_sql_user" "user" {
   name     = lookup(var.databases[count.index], "username")
   project  = var.project_id
   instance = google_sql_database_instance.default.name
-  # host       = var.user_host
+  host       = var.user_host
   password   = lookup(var.databases[count.index], "password") == "" ? random_id.user-password.hex : lookup(var.databases[count.index], "password")
   depends_on = ["google_sql_database_instance.default"]
 }

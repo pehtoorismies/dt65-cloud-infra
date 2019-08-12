@@ -144,24 +144,9 @@ variable "db_collation" {
   default     = ""
 }
 
-variable "user_name" {
-  description = "The name of the default user"
-  default     = "default"
-}
-
 variable "user_host" {
   description = "The host for the default user"
   default     = "%"
-}
-
-variable "user_password" {
-  description = "The password for the default user. If not set, a random one will be generated and available in the generated_user_password output variable."
-  default     = ""
-}
-
-variable "additional_users" {
-  description = "A list of users to be created in your cluster"
-  default     = []
 }
 
 variable create_timeout {

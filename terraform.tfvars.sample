@@ -1,12 +1,11 @@
 project         = "downtown65graphql"
 region          = "europe-north1"
-gke_master_pass = "your-gke-password"
 databases = [{
-  name     = "events"
-  username = "events"
-  password = "password"
+  name     = "db-1"
+  username = "username1"
+  password = "password1"
   }, {
-  name     = "wordpress"
-  username = "wordpress"
-  password = "password"
+  name     = "db2"
+  username = "username2"
+  password = "password2"
 }]

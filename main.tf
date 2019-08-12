@@ -12,7 +12,7 @@ provider "google-beta" {
   credentials = "${file("credentials.json")}"
   project     = var.project
   region      = var.region
-  version = "~> 2.12"
+  version     = "~> 2.12"
 }
 
 provider "random" {
@@ -63,64 +63,15 @@ module "mysql-db" {
   ]
 }
 
-# module "private-service-access" {
-#   source      = "github.com/GoogleCloudPlatform/terraform-google-sql-db/modules/private_service_access"
-#   project_id  = var.project
-#   vpc_network = "${module.vpc.vpc_name}"
-# }
-
-
-
-
-# module "cloudsql" {
-#   source                     = "./cloudsql"
-#   region                     = "${var.region}"
-#   availability_type          = "${var.availability_type}"
-#   sql_instance_size          = "${var.sql_instance_size}"
-#   sql_disk_type              = "${var.sql_disk_type}"
-#   sql_disk_size              = "${var.sql_disk_size}"
-#   sql_require_ssl            = "${var.sql_require_ssl}"
-#   sql_master_zone            = "${var.sql_master_zone}"
-#   sql_connect_retry_interval = "${var.sql_connect_retry_interval}"
-#   sql_replica_zone           = "${var.sql_replica_zone}"
-#   sql_user                   = "${var.sql_user}"
-#   sql_pass                   = "${var.sql_pass}"
-# }
-
-# resource "google_compute_global_address" "private_ip_address" {
-#   name          = "private-ip-address"
-#   purpose       = "VPC_PEERING"
-#   address_type  = "INTERNAL"
-#   prefix_length = 16
-#   network       = "${google_compute_network.vpc_network.self_link}"
-# }
-
-# resource "google_sql_database_instance" "master" {
-#    depends_on = [
-#     "google_service_networking_connection.private_vpc_connection"
-#   ]
-
-#   name             = "dt65-db"
-#   database_version = "MYSQL_5_7"
-#   region           = var.region
-#   settings {
-#     tier = "db-f1-micro"
-#     ip_configuration {
-#       ipv4_enabled    = "false"
-#       private_network = "${google_compute_network.private_network.self_link}"
-#     }
-#   }
-
-# }
-
-
-
-
-#   network_interface {
-#     network = "${google_compute_network.vpc_network.name}"
-
-#     access_config {
-#       // Ephemeral IP
-#     }
-#   }
-
+module "gke" {
+  source       = "./gke"
+  region       = var.region
+  project_id   = var.project
+  name         = "${var.project}-${terraform.workspace}-cluster"
+  auth_access  = var.gke-allow-cidr[terraform.workspace]
+  network      = module.vpc.self_link
+  subnetwork   = module.subnet.subnet_name
+  machine_type = "n1-standard-1"
+  node_count   = 1
+  preemptible  = true
+}

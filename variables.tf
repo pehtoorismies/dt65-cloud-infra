@@ -20,6 +20,21 @@ variable "subnet_cidr" {
   description = "Subnet range"
 }
 
+variable "gke-allow-cidr" {
+  default = {
+    # prod = "10.128.0.0/16"
+    prod = {
+      "all" = "0.0.0.0/0"
+    }
+    all = {
+      "all" = "0.0.0.0/0"
+    }
+  }
+
+  description = "Subnet range"
+}
+
+
 # Cloud SQL variables
 
 variable "availability_type" {
