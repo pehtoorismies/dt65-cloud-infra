@@ -28,10 +28,11 @@ module "vpc" {
 }
 
 module "subnet" {
-  source      = "./backend/subnet"
-  region      = var.region
-  vpc_network = module.vpc.self_link
-  subnet_cidr = var.subnet_cidr
+  source                = "./backend/subnet"
+  region                = var.region
+  name                  = "${terraform.workspace}-subnet"
+  vpc_network           = module.vpc.self_link
+  subnet_cidr           = var.subnet_cidr[terraform.workspace]
 }
 
 
@@ -64,14 +65,14 @@ module "mysql-db" {
 }
 
 module "gke" {
-  source       = "./gke"
-  region       = var.region
-  project_id   = var.project
-  name         = "${var.project}-${terraform.workspace}-cluster"
-  auth_access  = var.gke-allow-cidr[terraform.workspace]
-  network      = module.vpc.self_link
-  subnetwork   = module.subnet.subnet_name
-  machine_type = "n1-standard-1"
-  node_count   = 1
-  preemptible  = true
+  source                    = "./gke"
+  region                    = var.region
+  project_id                = var.project
+  name                      = "${var.project}-${terraform.workspace}-cluster"
+  auth_access               = var.gke-allow-cidr[terraform.workspace]
+  network                   = module.vpc.self_link
+  subnetwork                = module.subnet.subnet_name
+  machine_type              = "n1-standard-1"
+  node_count                = 1
+  preemptible               = true
 }

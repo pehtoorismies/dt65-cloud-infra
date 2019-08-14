@@ -36,8 +36,17 @@ resource "google_container_cluster" "primary" {
   #   enabled = "true"
   #   provider = "CALICO"
   # }
-}
 
+  # private_cluster_config {
+  # }
+
+  ip_allocation_policy {
+    use_ip_aliases           = true
+    cluster_ipv4_cidr_block  = ""
+    node_ipv4_cidr_block     = ""
+    services_ipv4_cidr_block = ""
+  }
+}
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
   name       = "dt65-node-pool"

@@ -39,6 +39,7 @@ variable "network" {
 variable "subnetwork" {
   description = "Subnet work range"
 }
+
 variable "preemptible" {
   description = "Allow shortlived nodes for lower price"
 }
