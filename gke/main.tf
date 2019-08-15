@@ -40,6 +40,12 @@ resource "google_container_cluster" "primary" {
   # private_cluster_config {
   # }
 
+  maintenance_policy {
+    daily_maintenance_window {
+      start_time = "03:00"
+    }
+  }
+
   ip_allocation_policy {
     use_ip_aliases           = true
     cluster_ipv4_cidr_block  = ""
@@ -55,6 +61,11 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   cluster    = google_container_cluster.primary.name
   node_count = var.node_count
 
+  autoscaling {
+    min_node_count = 3
+    max_node_count = 5
+  }
+
   management {
     auto_repair  = "true"
     auto_upgrade = "true"
@@ -67,6 +78,8 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     metadata = {
       disable-legacy-endpoints = "true"
     }
+
+
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
